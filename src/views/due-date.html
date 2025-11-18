@@ -4,10 +4,10 @@
             Perfil Tributario
         </h2>
 
-        <form id="tax-profile-form" class="space-y-5 h-24">
+        <div id="tax-profile-form" class="space-y-5 h-24">
 
             <div>
-                <label class="block text-md font-medium mb-2">Clasificación del contribuyente</label>
+                <p class="block text-md font-medium mb-2">Clasificación del contribuyente</p>
                 <select id="regimen" class="w-full p-2 border rounded-lg outline-none" onchange="updateCalendar()">
                     <option value="ordinario">Persona jurídica</option>
                     <option value="simple">Persona natural</option>
@@ -18,21 +18,21 @@
             </div>
 
             <div>
-                <label class="block text-md font-medium mb-2">Responsable de IVA</label>
+                <p class="block text-md font-medium mb-2">Responsable de IVA</p>
                 <div class="flex space-x-4">
-                    <label class="inline-flex items-center">
+                    <p class="inline-flex items-center">
                         <input type="radio" name="iva-responsible" value="si" checked onchange="updateCalendar()">
                         <span class="ml-2">Sí</span>
-                    </label>
-                    <label class="inline-flex items-center">
+                    </p>
+                    <p class="inline-flex items-center">
                         <input type="radio" name="iva-responsible" value="no" onchange="updateCalendar()">
                         <span class="ml-2">No</span>
-                    </label>
+                    </p>
                 </div>
             </div>
 
             <div id="iva-period-group">
-                <label class="block text-md font-medium mb-2">Periodicidad de IVA</label>
+                <p class="block text-md font-medium mb-2">Periodicidad de IVA</p>
                 <select id="iva-periodicity" class="w-full p-2 border rounded-lg" onchange="updateCalendar()">
                     <option value="bimestral">Bimestral</option>
                     <option value="cuatrimestral">Cuatrimestral</option>
@@ -40,60 +40,60 @@
             </div>
 
             <div>
-                <label class="block text-md font-medium mb-2">Agente de Retefuente</label>
+                <p class="block text-md font-medium mb-2">Agente de Retefuente</p>
                 <div class="flex space-x-4">
-                    <label class="inline-flex items-center">
+                    <p class="inline-flex items-center">
                         <input type="radio" name="retefuente" value="si" checked onchange="updateCalendar()">
                         <span class="ml-2">Sí</span>
-                    </label>
-                    <label class="inline-flex items-center">
+                    </p>
+                    <p class="inline-flex items-center">
                         <input type="radio" name="retefuente" value="no" onchange="updateCalendar()">
                         <span class="ml-2">No</span>
-                    </label>
+                    </p>
                 </div>
             </div>
 
             <div>
-                <label class="block text-md font-medium mb-2">Otros Impuestos</label>
+                <p class="block text-md font-medium mb-2">Otros Impuestos</p>
 
-                <label class="flex items-center">
+                <p class="flex items-center">
                     <input type="checkbox" id="imp-consumo" onchange="updateCalendar()">
                     <span class="ml-2">Gasolina y ACPM</span>
-                </label>
+                </p>
 
-                <label class="flex items-center">
+                <p class="flex items-center">
                     <input type="checkbox" id="imp-bolsas" onchange="updateCalendar()">
                     <span class="ml-2">Carbono</span>
-                </label>
+                </p>
 
-                <label class="flex items-center">
+                <p class="flex items-center">
                     <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
                     <span class="ml-2">Precios de transferencia</span>
-                </label>
+                </p>
                 
-                <label class="flex items-center">
+                <p class="flex items-center">
                     <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
                     <span class="ml-2">IVA prestadores de servicios desde el exterior</span>
-                </label>
+                </p>
                 
-                <label class="flex items-center">
+                <p class="flex items-center">
                     <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
                     <span class="ml-2">Impuesto al Patrimonio</span>
-                </label>
+                </p>
                 
-                <label class="flex items-center">
+                <p class="flex items-center">
                     <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
                     <span class="ml-2">Productos plásticos</span>
-                </label>
+                </p>
                 
-                <label class="flex items-center">
+                <p class="flex items-center">
                     <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
                     <span class="ml-2">Bebidas ultraprocesadas azucaradas</span>
-                </label>
+                </p>
             </div>            
 
             <div class="flex items-center space-x-1.5 mb-10">
-                <label class="block text-md font-medium">Último dígito de NIT</label>
+                <p class="block text-md font-medium">Último dígito de NIT</p>
                 <select 
                     id="ultimo-nit"
                     class="text-center text-xl border-none rounded-md p-10 py-1 outline-none checked:bg-blue-200!">
@@ -109,7 +109,7 @@
                     <option class="text-xl" value="9">9</option>
                 </select>
             </div>
-        </form>
+        </div>
     </div>
 
     <!-- CALENDARIO Y RESULTADOS -->
