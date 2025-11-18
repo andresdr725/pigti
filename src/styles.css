@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Fuentes */
+  --font-mono-trust: "Momo Trust Display", serif;
+}
+
+@layer {
+  :root {
+    background: #FAFAFA;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* :root {
+    --pigti-blue: #1e40af;
+    --pigti-green: #10b981;
+  }
+  .bg-pigti-blue {
+    background-color: var(--pigti-blue);
+  }
+  .text-pigti-blue {
+    color: var(--pigti-blue);
+  }
+  .border-pigti-blue {
+    border-color: var(--pigti-blue);
+  }
+  .bg-pigti-green {
+    background-color: var(--pigti-green);
+  }
+
+  body {
+    font-family: "Inter", sans-serif;
+    background-color: #f8fafc;
+  }
+  .card {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+  }
+  .select-group label {
+    font-weight: 600;
+    color: #374151;
+  } */
+}

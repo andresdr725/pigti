@@ -1,0 +1,168 @@
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-1 p-6 kpi-card h-[210%] w-96 border rounded-md mt-2.5">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800 flex items-center">
+            Perfil Tributario
+        </h2>
+
+        <form id="tax-profile-form" class="space-y-5 h-24">
+
+            <div>
+                <label class="block text-md font-medium mb-2">Clasificación del contribuyente</label>
+                <select id="regimen" class="w-full p-2 border rounded-lg outline-none" onchange="updateCalendar()">
+                    <option value="ordinario">Persona jurídica</option>
+                    <option value="simple">Persona natural</option>
+                    <option value="simple">Gran contribuyente</option>
+                    <option value="simple">Personas no residentes o entidades no domiciliarias en el país con Presencia  Económica Significativa - PES</option>
+                    <option value="simple">Régimen Simple de Tributación - RST</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-md font-medium mb-2">Responsable de IVA</label>
+                <div class="flex space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="iva-responsible" value="si" checked onchange="updateCalendar()">
+                        <span class="ml-2">Sí</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="iva-responsible" value="no" onchange="updateCalendar()">
+                        <span class="ml-2">No</span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="iva-period-group">
+                <label class="block text-md font-medium mb-2">Periodicidad de IVA</label>
+                <select id="iva-periodicity" class="w-full p-2 border rounded-lg" onchange="updateCalendar()">
+                    <option value="bimestral">Bimestral</option>
+                    <option value="cuatrimestral">Cuatrimestral</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-md font-medium mb-2">Agente de Retefuente</label>
+                <div class="flex space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="retefuente" value="si" checked onchange="updateCalendar()">
+                        <span class="ml-2">Sí</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="retefuente" value="no" onchange="updateCalendar()">
+                        <span class="ml-2">No</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-md font-medium mb-2">Otros Impuestos</label>
+
+                <label class="flex items-center">
+                    <input type="checkbox" id="imp-consumo" onchange="updateCalendar()">
+                    <span class="ml-2">Gasolina y ACPM</span>
+                </label>
+
+                <label class="flex items-center">
+                    <input type="checkbox" id="imp-bolsas" onchange="updateCalendar()">
+                    <span class="ml-2">Carbono</span>
+                </label>
+
+                <label class="flex items-center">
+                    <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
+                    <span class="ml-2">Precios de transferencia</span>
+                </label>
+                
+                <label class="flex items-center">
+                    <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
+                    <span class="ml-2">IVA prestadores de servicios desde el exterior</span>
+                </label>
+                
+                <label class="flex items-center">
+                    <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
+                    <span class="ml-2">Impuesto al Patrimonio</span>
+                </label>
+                
+                <label class="flex items-center">
+                    <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
+                    <span class="ml-2">Productos plásticos</span>
+                </label>
+                
+                <label class="flex items-center">
+                    <input type="checkbox" id="imp-predial" onchange="updateCalendar()">
+                    <span class="ml-2">Bebidas ultraprocesadas azucaradas</span>
+                </label>
+            </div>            
+
+            <div class="flex items-center space-x-1.5 mb-10">
+                <label class="block text-md font-medium">Último dígito de NIT</label>
+                <select 
+                    id="ultimo-nit"
+                    class="text-center text-xl border-none rounded-md p-10 py-1 outline-none checked:bg-blue-200!">
+                    <option class="text-xl" value="0">0</option>
+                    <option class="text-xl" value="1">1</option>
+                    <option class="text-xl" value="2">2</option>
+                    <option class="text-xl" value="3">3</option>
+                    <option class="text-xl" value="4">4</option>
+                    <option class="text-xl" value="5">5</option>
+                    <option class="text-xl" value="6">6</option>
+                    <option class="text-xl" value="7">7</option>
+                    <option class="text-xl" value="8">8</option>
+                    <option class="text-xl" value="9">9</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <!-- CALENDARIO Y RESULTADOS -->
+    <div class="lg:col-span-2 space-y-6">
+
+        <!-- FILTRO -->
+        <div class="bg-white p-6 kpi-card border-l-4 border-pigti-green">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <i data-lucide="timer" class="w-5 h-5 mr-2 text-pigti-green"></i>
+                Filtrar Vista del Calendario
+            </h2>
+
+            <div class="flex items-center gap-4">
+                <select id="days-filter" class="p-2 border rounded-lg" onchange="updateCalendar()">
+                    <option value="30">Próximos 30 días</option>
+                    <option value="60">Próximos 60 días</option>
+                    <option value="90">Próximos 90 días</option>
+                    <option value="365">Anual</option>
+                </select>
+
+                <div class="text-sm text-gray-600 border p-2 rounded-lg">
+                    Total: <span id="total-obligations" class="font-bold text-pigti-blue">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLA -->
+        <div class="bg-white p-6 kpi-card border-l-4 border-pigti-blue">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <i data-lucide="calendar" class="w-5 h-5 mr-2 text-pigti-blue"></i>
+                Vencimientos Activos
+            </h2>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-bold uppercase">Impuesto</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold uppercase">Periodicidad</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold uppercase">Fecha</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold uppercase">Días</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-results" class="divide-y">
+                        <tr>
+                            <td colspan="4" class="py-4 text-center text-gray-400 italic">
+                                Cargando...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

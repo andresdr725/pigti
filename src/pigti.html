@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIGTI</title>
+    <link rel="stylesheet" href="output.css">
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- Iconos Lucide -->
+    <!-- <script type="module">
+        import { BadgeCheck, createIcons, Calendar, SlidersHorizontal, Package, Timer } from 'https://unpkg.com/lucide@latest/dist/umd/lucide.js';
+        createIcons({ icons: { Calendar, SlidersHorizontal, Package, Timer } });
+    </script> -->
+</head>
+<body>
+    
+    <section class="w-dvw h-dvh grid grid-cols-[1fr_3fr]">
+        <section class="bg-[#efefef]"> 
+            <div class="m-5">
+                <div class="flex items-center space-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2b7fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-check-icon lucide-badge-check"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <h1 class="font-mono-trust text-3xl text-blue-500 font-black">PIGTI</h1>
+                </div>
+                <p class="text-md font-bold text-[#0a0b5c]">Plataforma Inteligente de Gestión Tributaria</p>
+            </div>
+            <div  class="w-96 h-96 m-5">
+            <div class="menu-item w-96 h-12 content-center rounded-md hover:bg-blue-300 cursor-pointer" data-page="dashboard">
+                <p class="text-xl text-center font-bold">Panel principal</p>
+            </div>
+            <div class="menu-item w-96 h-12 content-center rounded-md hover:bg-blue-100 cursor-pointer" data-page="due-date">
+                <p class="text-xl text-center font-bold">Vencimientos</p>
+            </div>
+
+            <div class="menu-item w-96 h-12 content-center rounded-md hover:bg-blue-100 cursor-pointer" data-page="diagnostic">
+                <p class="text-xl text-center font-bold">Diagnóstico de riesgo</p>
+            </div>
+        </div>    
+        </section>
+        <section id="content" class="p-6"></section>
+    </section>
+    <script src="./scripts/index.js"></script>
+    <!-- <header class="mb-8">
+        <h1 class="text-3xl font-extrabold text-pigti-blue flex items-center mb-2">
+            <i data-lucide="sliders-horizontal" class="w-8 h-8 mr-3"></i>
+            Configurador Dinámico PIGTI
+        </h1>
+        <p class="text-gray-600">Seleccione las características tributarias del cliente para ver su calendario de vencimientos personalizado.</p>
+    </header> -->
+
+    <!-- Script de Simulación de Lógica Tributaria -->
+    <script>
+        // --- 1. DATOS BASE (SIMULACIÓN DE CALENDARIO TRIBUTARIO) ---
+        // En un entorno real, estos datos vendrían de tu hoja 'Calendario_Tributario_Base'
+        // 'vencimiento': [Año, Mes, Día] - El mes es 1-indexado (1=Enero, 12=Diciembre)
+        const BASE_CALENDAR = [
+            // Impuestos COMUNES (Siempre aplican)
+            { id: 'renta_anual', name: 'Renta (Anual)', periodicity: 'Anual', apply: (config) => true, date: [2026, 7, 10] }, // Julio
+            
+            // Impuestos por IVA
+            { id: 'iva_bime1', name: 'IVA - Bimestre 1 (Ene-Feb)', periodicity: 'Bimestral', apply: (config) => config.ivaPeriodicity === 'bimestral', date: [2025, 3, 20] },
+            { id: 'iva_bime2', name: 'IVA - Bimestre 2 (Mar-Abr)', periodicity: 'Bimestral', apply: (config) => config.ivaPeriodicity === 'bimestral', date: [2025, 5, 20] },
+            { id: 'iva_bime3', name: 'IVA - Bimestre 3 (May-Jun)', periodicity: 'Bimestral', apply: (config) => config.ivaPeriodicity === 'bimestral', date: [2025, 7, 20] },
+            { id: 'iva_cuatri1', name: 'IVA - Cuatrimestre 1', periodicity: 'Cuatrimestral', apply: (config) => config.ivaPeriodicity === 'cuatrimestral', date: [2025, 5, 25] },
+            { id: 'iva_cuatri2', name: 'IVA - Cuatrimestre 2', periodicity: 'Cuatrimestral', apply: (config) => config.ivaPeriodicity === 'cuatrimestral', date: [2025, 9, 25] },
+
+            // Impuestos por Retefuente (Asumiendo que es mensual)
+            { id: 'rete_jan', name: 'Retefuente (Enero)', periodicity: 'Mensual', apply: (config) => config.retefuente === 'si', date: [2025, 2, 15] },
+            { id: 'rete_feb', name: 'Retefuente (Febrero)', periodicity: 'Mensual', apply: (config) => config.retefuente === 'si', date: [2025, 3, 15] },
+            { id: 'rete_mar', name: 'Retefuente (Marzo)', periodicity: 'Mensual', apply: (config) => config.retefuente === 'si', date: [2025, 4, 15] },
+            { id: 'rete_apr', name: 'Retefuente (Abril)', periodicity: 'Mensual', apply: (config) => config.retefuente === 'si', date: [2025, 5, 15] },
+
+            // Otros Impuestos
+            { id: 'impoconsumo', name: 'Impoconsumo', periodicity: 'Bimestral', apply: (config) => config.impConsumo, date: [2025, 3, 12] },
+            { id: 'impobolsas', name: 'Impuesto Bolsas Plásticas', periodicity: 'Anual', apply: (config) => config.impBolsas, date: [2026, 1, 30] },
+            // NUEVO: Impuesto Predial
+            { id: 'imp_predial', name: 'Impuesto Predial Unificado', periodicity: 'Anual', apply: (config) => config.impPredial, date: [2025, 5, 31] }
+        ];
+
+        // --- 2. FUNCIÓN DE RENDERIZADO Y LÓGICA ---
+
+        function updateCalendar() {
+            // A. CAPTURAR CONFIGURACIÓN DEL USUARIO
+            const isIvaResponsible = document.querySelector('input[name="iva-responsible"]:checked').value === 'si';
+
+            const config = {
+                regimen: document.getElementById('regimen').value,
+                ivaResponsible: isIvaResponsible,
+                ivaPeriodicity: document.getElementById('iva-periodicity').value,
+                retefuente: document.querySelector('input[name="retefuente"]:checked').value,
+                impConsumo: document.getElementById('imp-consumo').checked,
+                impBolsas: document.getElementById('imp-bolsas').checked,
+                impPredial: document.getElementById('imp-predial').checked, // Nuevo campo capturado
+                daysFilter: parseInt(document.getElementById('days-filter').value, 10)
+            };
+
+            // Mostrar/Ocultar Periodicidad de IVA
+            document.getElementById('iva-period-group').style.display = isIvaResponsible ? 'block' : 'none';
+
+            // B. APLICAR FILTROS DE PERFIL TRIBUTARIO
+            const today = new Date();
+            // Normalizar la hora de hoy para cálculos de días
+            today.setHours(0, 0, 0, 0); 
+
+            const results = [];
+            let totalObligations = 0;
+
+            BASE_CALENDAR.forEach(tax => {
+                // Meses en JS son 0-indexados, por eso se resta 1 (tax.date[1] - 1)
+                const taxDate = new Date(tax.date[0], tax.date[1] - 1, tax.date[2]); 
+                taxDate.setHours(0, 0, 0, 0); // Normalizar fecha de vencimiento
+                
+                // Lógica de aplicación de impuestos según configuración
+                let applies = tax.apply(config);
+                
+                // Filtro especial para IVA: solo aplica si es responsable de IVA
+                if (tax.id.startsWith('iva_bime') || tax.id.startsWith('iva_cuatri')) {
+                    applies = applies && isIvaResponsible;
+                }
+                
+                if (applies) {
+                    // Cálculo de días restantes
+                    const diffTime = taxDate.getTime() - today.getTime();
+                    // Usamos Math.round para evitar problemas de redondeo en diferencia de horas
+                    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)); 
+                    
+                    // Aplicar el filtro de Días Restantes (30, 60, 365 días)
+                    if (diffDays >= 0 && diffDays <= config.daysFilter) {
+                        results.push({
+                            ...tax,
+                            date: taxDate.toLocaleDateString('es-CO', { year: 'numeric', month: 'short', day: 'numeric' }),
+                            daysLeft: diffDays
+                        });
+                        totalObligations++;
+                    }
+                }
+            });
+
+            // C. ORDENAR RESULTADOS (Por días restantes, el más cercano primero)
+            results.sort((a, b) => a.daysLeft - b.daysLeft);
+
+            // D. RENDERIZAR RESULTADOS
+            const resultsBody = document.getElementById('calendar-results');
+            resultsBody.innerHTML = '';
+            
+            if (results.length === 0) {
+                resultsBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500 italic">
+                            No hay vencimientos en los próximos ${config.daysFilter} días con su configuración actual.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                results.forEach(item => {
+                    const statusClass = item.daysLeft <= 7 ? 'font-bold text-red-600' : 'text-gray-700';
+                    resultsBody.innerHTML += `
+                        <tr class="hover:bg-gray-50 transition duration-150">
+                            <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900 font-medium">${item.name}</td>
+                            <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">${item.periodicity}</td>
+                            <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">${item.date}</td>
+                            <td class="px-6 py-3 whitespace-nowrap text-sm ${statusClass}">${item.daysLeft} días</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // E. ACTUALIZAR CONTADOR
+            document.getElementById('total-obligations').textContent = totalObligations;
+        }
+
+        // Inicializar la vista al cargar la página
+        window.onload = updateCalendar;
+    </script>
+</body>
+</html>
